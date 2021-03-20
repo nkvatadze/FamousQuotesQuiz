@@ -10,6 +10,9 @@ class Quote extends Model
 {
     use HasFactory;
 
+    const BINARY_MODE = 'binary';
+    const MULTIPLE_MODE = 'multiple';
+
     public function option(): BelongsTo
     {
         return $this->belongsTo(Option::class);
