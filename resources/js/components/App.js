@@ -11,25 +11,27 @@ function App() {
     };
     return (
         <Router>
-            <nav className="p-10">
-                <ul className="flex flex-row">
-                    <li className="mr-5">
-                        <Link to="/">Start Quiz</Link>
-                    </li>
-                    <li>
-                        <Link to="/settings">Settings</Link>
-                    </li>
-                </ul>
-            </nav>
+            <div className="h-full">
+                <nav className="p-10">
+                    <ul className="flex flex-row">
+                        <li className="mr-5">
+                            <Link to="/">Start Quiz</Link>
+                        </li>
+                        <li>
+                            <Link to="/settings">Settings</Link>
+                        </li>
+                    </ul>
+                </nav>
 
-            <Switch>
-                <Route path="/settings">
-                    <Settings mode={mode} />
-                </Route>
-                <Route path="/">
-                    <Main mode={mode} />
-                </Route>
-            </Switch>
+                <Switch>
+                    <Route path="/settings">
+                        <Settings mode={mode} />
+                    </Route>
+                    <Route path="/">
+                        <Main mode={mode} />
+                    </Route>
+                </Switch>
+            </div>
         </Router>
     );
 }

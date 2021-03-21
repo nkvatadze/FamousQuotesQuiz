@@ -5,7 +5,7 @@ const getQuotes = async (mode) => {
     console.log(mode);
     try {
         const res = await axios.get(`${BACKEND_URL}/api/quotes?mode=${mode}`);
-        const { data } = await res;
+        return res.data;
     } catch (err) {
         if (err.response) {
             console.log(err.response.data);
