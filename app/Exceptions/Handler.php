@@ -49,5 +49,14 @@ class Handler extends ExceptionHandler
                 ]);
             }
         });
+
+        $this->renderable(function (\Exception $e, Request $request) {
+            if ($e instanceof ValidationException) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'errors' => $e->errors()
+                ])->setStatusCode(Response::HTTP_BAD_REQUEST);
+            }
+        });
     }
 }
