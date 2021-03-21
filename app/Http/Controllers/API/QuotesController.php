@@ -13,7 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class QuotesController extends Controller
 {
-    const QUOTES_PER_SESSION = 10;
+    const QUOTES_PER_SESSION = 2;
     const RANDOM_AUTHORS_AMOUNT = 2;
 
     public function index(IndexQuoteRequest $request): JsonResponse

@@ -4,7 +4,7 @@ import Main from "./Main";
 import Settings from "./Settings";
 
 function App() {
-    const [mode, setMode] = useState("binary");
+    const [mode, setMode] = useState("multiple");
 
     const modeChangeHandler = (mode) => {
         setMode(mode);
@@ -12,12 +12,9 @@ function App() {
     return (
         <Router>
             <div className="h-full">
-                <nav className="p-10">
-                    <ul className="flex flex-row">
-                        <li className="mr-5">
-                            <Link to="/">Start Quiz</Link>
-                        </li>
-                        <li>
+                <nav className="py-10 px-32">
+                    <ul className="flex flex-row-reverse">
+                        <li className="hover-underline">
                             <Link to="/settings">Settings</Link>
                         </li>
                     </ul>
