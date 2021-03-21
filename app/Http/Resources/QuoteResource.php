@@ -18,7 +18,7 @@ class QuoteResource extends JsonResource
             'id' => $this->id,
             'correct_option_id' => $this->option_id,
             'text' => $this->text,
-            'options' => OptionResource::collection($this->options)
+            'options' => AuthorResource::collection($this->authors)
         ];
     }
 }

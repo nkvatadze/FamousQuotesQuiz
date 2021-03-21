@@ -15,8 +15,8 @@ class CreateQuotesTable extends Migration
     {
         Schema::create('quotes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('option_id')->constrained()->onDelete('RESTRICT');
-            $table->string('text');
+            $table->foreignId('author_id')->constrained()->onDelete('RESTRICT');
+            $table->text('text');
             $table->timestamps();
         });
     }
