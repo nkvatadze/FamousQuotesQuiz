@@ -16,9 +16,9 @@ class QuoteResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'correct_option_id' => $this->option_id,
+            'correct_author_id' => $this->option_id,
             'text' => $this->text,
-            'options' => AuthorResource::collection($this->authors)
+            'authors' => AuthorResource::collection($this->authors)
         ];
     }
 }
