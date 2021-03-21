@@ -4,8 +4,11 @@ import Quote from "./Quote";
 import Popup from "./Popup";
 import Statistics from "./Statistics";
 import { setItem, getItem } from "../utils/localstorage";
+import { binary_choices, modes } from "../utils/enums";
+import { useHistory } from "react-router-dom";
 
 function Main({ mode }) {
+    const history = useHistory();
     const [quotes, setQuotes] = useState([]);
     const [currentQuote, setCurrentQuote] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
@@ -14,7 +17,6 @@ function Main({ mode }) {
     const [popupMessage, setPopupMessage] = useState("");
 
     useEffect(() => {
-        console.log("useEffectCalled");
         getQuotes(mode).then(({ quotes }) => {
             setItem("quiz", { count: quotes.length, points: 0 });
             processQuotes(quotes);
@@ -32,11 +34,22 @@ function Main({ mode }) {
         }
     };
 
-    const handleQuoteAnswer = (author) => {
-        const isCorrect = currentQuote.correct_author_id === author.id;
+    const handleAnswerQuote = (author, mode, binary_choice = null) => {
+        let isCorrect = currentQuote.correct_author_id === author.id;
+        let rightAnswer;
+        if (mode === modes.BINARY) {
+            rightAnswer = isCorrect ? binary_choices.YES : binary_choices.NO;
+
+            isCorrect = binary_choice === rightAnswer;
+        } else {
+            rightAnswer = currentQuote.authors.find(
+                (author) => author.id === currentQuote.correct_author_id
+            ).name;
+        }
+
         const message =
             (isCorrect ? "Correct! " : "Sorry, you are wrong! ") +
-            `The right answer is ${author.name}`;
+            `The right answer is ${rightAnswer}`;
         setShowPopup(true);
         setIsAnswerCorrect(isCorrect);
         setPopupMessage(message);
@@ -47,7 +60,7 @@ function Main({ mode }) {
             setItem("quiz", quiz);
         }
 
-        setTimeout(() => processQuotes(quotes), 1000);
+        setTimeout(() => processQuotes(quotes), 2000);
     };
 
     if (isQuizFinished) {
@@ -63,7 +76,7 @@ function Main({ mode }) {
             <Quote
                 mode={mode}
                 quote={currentQuote}
-                quoteAnswerHandler={handleQuoteAnswer}
+                answerQuoteHandler={handleAnswerQuote}
             />
 
             {showPopup && (

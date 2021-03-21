@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { modes, binary_choices } from "../utils/enums";
 
-function Quote({ mode, quote, quoteAnswerHandler }) {
+function Quote({ mode, quote, answerQuoteHandler }) {
     if (!quote) {
         return <div />;
+    }
+    const isMultipleMode = mode === modes.MULTIPLE;
+    let author;
+
+    if (!isMultipleMode && quote.authors.length) {
+        author = quote.authors[0];
     }
 
     return (
@@ -15,12 +22,18 @@ function Quote({ mode, quote, quoteAnswerHandler }) {
                 <div id="quote">
                     <q className="italic text-gray-600">{quote.text}</q>
                 </div>
-                <div id="options" className="flex justify-center">
-                    <ul className="">
+                <div id="authors" className="flex justify-center">
+                    <ul>
                         {quote.authors.map((author) => (
                             <li
-                                onClick={() => quoteAnswerHandler(author)}
-                                className="cursor-pointer float-left clear-both inline-block hover-underline mt-1"
+                                onClick={() =>
+                                    answerQuoteHandler(author, modes.MULTIPLE)
+                                }
+                                className={`float-left clear-both inline-block ${
+                                    isMultipleMode
+                                        ? "hover-underline underline-gray cursor-pointer"
+                                        : "font-bold"
+                                } mt-1`}
                                 key={author.id}
                             >
                                 {author.name}
@@ -28,6 +41,34 @@ function Quote({ mode, quote, quoteAnswerHandler }) {
                         ))}
                     </ul>
                 </div>
+                {!isMultipleMode && (
+                    <div className="flex justify-between items-center px-20 py-5">
+                        <span
+                            onClick={() =>
+                                answerQuoteHandler(
+                                    author,
+                                    modes.BINARY,
+                                    binary_choices.YES
+                                )
+                            }
+                            className="cursor-pointer hover-underline underline-green capitalize"
+                        >
+                            {binary_choices.YES}
+                        </span>
+                        <span
+                            onClick={() =>
+                                answerQuoteHandler(
+                                    author,
+                                    modes.BINARY,
+                                    binary_choices.NO
+                                )
+                            }
+                            className="cursor-pointer hover-underline underline-red capitalize"
+                        >
+                            {binary_choices.NO}
+                        </span>
+                    </div>
+                )}
             </div>
         </div>
     );

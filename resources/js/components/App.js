@@ -1,35 +1,45 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link, useHistory } from "react-router-dom";
 import Main from "./Main";
 import Settings from "./Settings";
+import { modes } from "../utils/enums";
+import { getItem, setItem } from "../utils/localstorage";
 
 function App() {
-    const [mode, setMode] = useState("multiple");
+    const history = useHistory();
+    const [mode, setMode] = useState(getItem("mode") || modes.BINARY);
 
-    const modeChangeHandler = (mode) => {
+    const handleModeChange = (mode) => {
+        setItem("mode", mode);
         setMode(mode);
+        history.push("/");
     };
-    return (
-        <Router>
-            <div className="h-full">
-                <nav className="py-10 px-32">
-                    <ul className="flex flex-row-reverse">
-                        <li className="hover-underline">
-                            <Link to="/settings">Settings</Link>
-                        </li>
-                    </ul>
-                </nav>
 
-                <Switch>
-                    <Route path="/settings">
-                        <Settings mode={mode} />
-                    </Route>
-                    <Route path="/">
-                        <Main mode={mode} />
-                    </Route>
-                </Switch>
-            </div>
-        </Router>
+    return (
+        <div className="h-full">
+            <nav className="py-10 px-32">
+                <ul className="flex flex-row justify-end">
+                    <li className="hover-underline underline-gray mr-5">
+                        <Link to="/">Start Quiz</Link>
+                    </li>
+                    <li className="hover-underline underline-gray">
+                        <Link to="/settings">Settings</Link>
+                    </li>
+                </ul>
+            </nav>
+
+            <Switch>
+                <Route path="/settings">
+                    <Settings
+                        mode={mode}
+                        modeChangeHandler={handleModeChange}
+                    />
+                </Route>
+                <Route path="/">
+                    <Main mode={mode} />
+                </Route>
+            </Switch>
+        </div>
     );
 }
 
