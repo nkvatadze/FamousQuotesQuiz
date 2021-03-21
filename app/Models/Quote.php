@@ -13,8 +13,8 @@ class Quote extends Model
     const BINARY_MODE = 'binary';
     const MULTIPLE_MODE = 'multiple';
 
-    public function option(): BelongsTo
+    public function author(): BelongsTo
     {
-        return $this->belongsTo(Option::class);
+        return $this->belongsTo(Author::class);
     }
 }
