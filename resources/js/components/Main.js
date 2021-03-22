@@ -15,13 +15,14 @@ function Main({ mode }) {
     const [isQuizFinished, setIsQuizFinished] = useState(false);
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(true);
     const [popupMessage, setPopupMessage] = useState("");
+    const [startAgain, setStartAgain] = useState(false);
 
     useEffect(() => {
         getQuotes(mode).then(({ quotes }) => {
             setItem("quiz", { count: quotes.length, points: 0 });
             processQuotes(quotes);
         });
-    }, []);
+    }, [startAgain]);
 
     const processQuotes = (quotes) => {
         if (quotes.length) {
@@ -35,6 +36,10 @@ function Main({ mode }) {
     };
 
     const handleAnswerQuote = (author, mode, binary_choice = null) => {
+        if (showPopup) {
+            return;
+        }
+
         let isCorrect = currentQuote.correct_author_id === author.id;
         let rightAnswer;
         if (mode === modes.BINARY) {
@@ -63,10 +68,15 @@ function Main({ mode }) {
         setTimeout(() => processQuotes(quotes), 2000);
     };
 
+    const handleStartAgainChange = () => {
+        setStartAgain(!startAgain);
+        setIsQuizFinished(false);
+    };
+
     if (isQuizFinished) {
         return (
             <div>
-                <Statistics />
+                <Statistics startAgainChangeHandler={handleStartAgainChange} />
             </div>
         );
     }
