@@ -73,6 +73,8 @@ needed. After generating all possible authors they are all shuffled
 On React.js side, there are only functional components. States are controlled with useState hook. React application is communicating with Backend server using axios HTTP client,
 getting from [quotes](#quotes) service data and rendering it into the Main Component. Questions are displayed one-by-one. They are stored on a client's side, in 
 the Browser's localStorage and because of that user maintains data after refreshing page. 
+###
+
 ---
 
 ## Rest API
