@@ -4,7 +4,7 @@
 
 ### About App:
 
-In the famous quote quiz game system will ask questions and user should try to pick a correct answer. Depending
+In the famous quote quiz game, system will ask questions and user should try to pick a correct answer. Depending
 on selected mode user will have to choose correct answer from a list of answers, or simply to answer with Yes/No
 to the question.
 
@@ -28,7 +28,7 @@ Style is mainly developed using tailwind.css
 On backend side, quotes are seeded from
 https://goquotes-api.herokuapp.com/api/v1/random?count=200 Rest API.
 
-Main problem on [Get All Quotes](#quotes) service was: **quote's possible answers must be randomly 
+Main problem was on [Get All Quotes](#quotes) service: **quote's possible answers must be randomly 
 generated**. For this solution optimizing memory and SQL queries is mandatory. In such case Laravel's LazyCollection 
 implementation is efficient. All authors are *Lazy Loaded* into the memory and actual objects are fetched when it is 
 needed. After generating all possible authors they are all shuffled
@@ -62,12 +62,12 @@ needed. After generating all possible authors they are all shuffled
 ```json
 {
     "mode": "string multiple/binary",
-    "quotes": [ // array
+    "quotes": [
         {
             "id": "integer",
             "correct_author_id": "integer",
             "text": "string",
-            "authors": [ // array
+            "authors": [
                 {
                     "id": "integer",
                     "name": "string"
