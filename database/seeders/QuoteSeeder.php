@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 
 class QuoteSeeder extends Seeder
 {
+    const ANONYMOUS = 'anonymous';
     /**
      * Run the database seeds.
      *
@@ -20,6 +21,8 @@ class QuoteSeeder extends Seeder
             ->groupBy('author');
         $insertData = [];
         foreach ($quotesGroupedByAuthor as $author => $quotes) {
+            if(strtolower($author) === self::ANONYMOUS) continue;
+
             $author = Author::create([
                 'name' => $author
             ]);

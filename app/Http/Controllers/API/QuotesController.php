@@ -28,7 +28,7 @@ class QuotesController extends Controller
             );
         } elseif ($validated['mode'] === Quote::BINARY_MODE) {
             $quotes = $quotes->each(fn($quote) => $quote->authors = collect([
-                rand(0, 10) > 5 ? $quote->author : $authors->where('id', '!=', $quote->id)->random()
+                rand(0, 1) ? $quote->author : $authors->where('id', '!=', $quote->id)->random()
             ]));
         }
 

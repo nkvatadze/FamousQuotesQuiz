@@ -1,18 +1,30 @@
-import React, { useState } from "react";
-import { Switch, Route, Link, useHistory } from "react-router-dom";
+import React, {useState} from "react";
+import {Switch, Route, Link, useHistory} from "react-router-dom";
 import Main from "./Main";
 import Settings from "./Settings";
-import { modes } from "../utils/enums";
-import { getItem, setItem } from "../utils/localstorage";
+import {modes} from "../utils/enums";
+import {getItem, removeObject, setItem} from "../utils/localstorage";
 
 function App() {
     const history = useHistory();
     const [mode, setMode] = useState(getItem("mode") || modes.BINARY);
+    const [errorExist, setErrorExist] = useState(false);
 
-    const handleModeChange = (mode) => {
-        setItem("mode", mode);
-        setMode(mode);
+    const handleErrorExistChange = () => {
+        setErrorExist(true);
+    };
+
+    const handleModeChange = (newMode) => {
         history.push("/");
+
+        if (mode === newMode) {
+            return;
+        }
+
+        setItem("mode", newMode);
+        removeObject("session");
+        setMode(newMode);
+        setErrorExist(false);
     };
 
     return (
@@ -36,7 +48,11 @@ function App() {
                     />
                 </Route>
                 <Route path="/">
-                    <Main mode={mode} />
+                    <Main
+                        errorExist={errorExist}
+                        errorExistChangeHandler={handleErrorExistChange}
+                        mode={mode}
+                    />
                 </Route>
             </Switch>
         </div>

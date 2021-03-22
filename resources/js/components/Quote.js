@@ -1,14 +1,13 @@
 import React from "react";
 import { modes, binary_choices } from "../utils/enums";
 
-function Quote({ mode, quote, answerQuoteHandler }) {
-    if (!quote) {
-        return <div />;
-    }
-    const isMultipleMode = mode === modes.MULTIPLE;
+function Quote({ mode, quote, quoteAnswerHandler }) {
+    if (!quote) return null;
+    
+    const isModeMultiple = mode === modes.MULTIPLE;
     let author;
 
-    if (!isMultipleMode && quote.authors.length) {
+    if (!isModeMultiple && quote.authors.length) {
         author = quote.authors[0];
     }
 
@@ -25,46 +24,24 @@ function Quote({ mode, quote, answerQuoteHandler }) {
                 <div id="authors" className="flex justify-center">
                     <ul>
                         {quote.authors.map((author) => (
-                            <li
-                                onClick={() =>
-                                    answerQuoteHandler(author, modes.MULTIPLE)
-                                }
-                                className={`float-left clear-both inline-block ${
-                                    isMultipleMode
-                                        ? "hover-underline underline-gray cursor-pointer"
-                                        : "font-bold"
-                                } mt-1`}
-                                key={author.id}
-                            >
+                            <li key={author.id} onClick={isModeMultiple ? () => quoteAnswerHandler(author, modes.MULTIPLE) : undefined}
+                                className={`float-left clear-both inline-block mt-1
+                                    ${isModeMultiple ? "hover-underline underline-gray cursor-pointer" : "font-bold"}`
+                                }>
                                 {author.name}
                             </li>
                         ))}
                     </ul>
                 </div>
-                {!isMultipleMode && (
+                
+                {!isModeMultiple && (
                     <div className="flex justify-between items-center px-20 py-5">
-                        <span
-                            onClick={() =>
-                                answerQuoteHandler(
-                                    author,
-                                    modes.BINARY,
-                                    binary_choices.YES
-                                )
-                            }
-                            className="cursor-pointer hover-underline underline-green capitalize"
-                        >
+                        <span onClick={() => quoteAnswerHandler(author,modes.BINARY,binary_choices.YES)}
+                            className="cursor-pointer hover-underline underline-green capitalize mr-5">
                             {binary_choices.YES}
                         </span>
-                        <span
-                            onClick={() =>
-                                answerQuoteHandler(
-                                    author,
-                                    modes.BINARY,
-                                    binary_choices.NO
-                                )
-                            }
-                            className="cursor-pointer hover-underline underline-red capitalize"
-                        >
+                        <span onClick={() => quoteAnswerHandler(author, modes.BINARY, binary_choices.NO)}
+                            className="cursor-pointer hover-underline underline-red capitalize">
                             {binary_choices.NO}
                         </span>
                     </div>

@@ -7,7 +7,17 @@ const getQuotes = async (mode) => {
         return res.data;
     } catch (err) {
         if (err.response) {
-            console.log(err.response.data);
+            let errorMessage = "Failed to load quotes, please refresh the page.";
+            if (err.response.status < 500) {
+                const errors = err.response.data.errors;
+                if (errors) {
+                    errorMessage +="\n Reason: \n"
+                    for (let error of Object.values(errors)) {
+                        errorMessage += error + "\n";
+                    }
+                }
+            }
+            throw new Error(errorMessage);
         }
     }
 };
