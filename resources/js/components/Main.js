@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getQuotes } from "../utils/api";
+import { getQuotes, checkIfCorrect } from "../utils/api";
 import Quote from "./Quote";
 import Popup from "./Popup";
 import Statistics from "./Statistics";
 import { setItem, getItem, removeObject } from "../utils/localstorage";
-import { binary_choices, modes } from "../utils/enums";
 
 function Main({ mode, errorExist, errorExistChangeHandler }) {
     const session = getItem("session");
@@ -60,26 +59,21 @@ function Main({ mode, errorExist, errorExistChangeHandler }) {
         }
     };
 
-    const handleQuoteAnswer = (author, mode, binaryChoice = null) => {
+    const handleQuoteAnswer = async (author, mode, binaryChoice = null) => {
+
         if (showPopup) {
             return;
         }
 
-        let isCorrect = currentQuote.correct_author_id === author.id;
-        let correctAnswer;
-        if (mode === modes.BINARY) {
-            correctAnswer = isCorrect ? binary_choices.YES : binary_choices.NO;
-            isCorrect = binaryChoice === correctAnswer;
-        } else {
-            correctAnswer = currentQuote.authors.find((author) => author.id === currentQuote.correct_author_id)?.name;
-        }
+        const {is_correct, correct_answer} = await checkIfCorrect(currentQuote.id, mode, author.id, binaryChoice)
+        console.log(is_correct, correct_answer);
 
-        const message =`${isCorrect ? "Correct! " : "Sorry, you are wrong! "} The right answer is ${correctAnswer}`;
+        const message =`${is_correct ? "Correct! " : "Sorry, you are wrong! "} The right answer is ${correct_answer}`;
         setShowPopup(true);
-        setIsAnswerCorrect(isCorrect);
+        setIsAnswerCorrect(is_correct);
         setPopupMessage(message);
 
-        if (isCorrect) {
+        if (is_correct) {
             const quiz = getItem("statistics");
             quiz.points++;
             setItem("statistics", quiz);

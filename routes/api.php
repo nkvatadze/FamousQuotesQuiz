@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('quotes')->name('quote.')->group(function () {
     Route::get('/', [QuotesController::class, 'index'])->name('index');
+    Route::post('/{quote}/answers/check', [QuotesController::class, 'checkAnswer'])->name('is_correct');
 });

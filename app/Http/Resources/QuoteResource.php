@@ -16,7 +16,6 @@ class QuoteResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'correct_author_id' => $this->author_id,
             'text' => $this->text,
             'authors' => AuthorResource::collection($this->authors)
         ];

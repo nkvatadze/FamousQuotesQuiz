@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\CheckAnswerRequest;
 use App\Http\Requests\API\IndexQuoteRequest;
 use App\Http\Resources\QuoteResource;
 use App\Models\Author;
@@ -35,6 +36,21 @@ class QuotesController extends Controller
         return response()->json([
             'mode' => request()->get('mode'),
             'quotes' => QuoteResource::collection($quotes)
+        ]);
+    }
+
+    public function checkAnswer(Quote $quote, CheckAnswerRequest $request)
+    {
+        $validated = $request->validated();
+        $isAnswerCorrect = $quote->author_id === $validated['author_id'];
+
+        if ($validated['mode'] === Quote::BINARY_MODE) {
+            $isAnswerCorrect = $isAnswerCorrect === (boolean)$validated['binary_choice'];
+        }
+
+        return response()->json([
+            'is_correct' => $isAnswerCorrect,
+            'correct_answer' => $quote->author->name
         ]);
     }
 }

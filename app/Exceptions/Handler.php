@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -46,8 +47,14 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'code' => Response::HTTP_BAD_REQUEST,
                     'errors' => $e->errors()
-                ],Response::HTTP_BAD_REQUEST);
+                ], Response::HTTP_BAD_REQUEST);
             }
+
+            if ($e instanceof ModelNotFoundException)
+                return response()->json([
+                    'code' => Response::HTTP_NOT_FOUND,
+                    'errors' => "Not found, please reload page"
+                ], Response::HTTP_NOT_FOUND);
         });
     }
 }

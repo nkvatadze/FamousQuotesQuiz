@@ -12,6 +12,8 @@ class Quote extends Model
 
     const BINARY_MODE = 'binary';
     const MULTIPLE_MODE = 'multiple';
+    const BINARY_CHOICE_YES = 'yes';
+    const BINARY_CHOICE_NO = 'no';
 
     public function author(): BelongsTo
     {
